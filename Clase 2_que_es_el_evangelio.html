@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Juego del episodio — El Evangelio y el Cristianismo | Preaching Jesus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'Montserrat',sans-serif;background:#FEF9F8;color:#000;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+:root{
+  --pink:#FF2254;--burg:#C50055;--purple:#320185;
+  --teal:#006080;--gold:#D4AF37;
+  --green:#1D9E75;--red:#D85A30;
+}
+
+/* ═══════════════════════════════════════
+   LANDING VIEW
+═══════════════════════════════════════ */
+#vLand{display:block}
+#vGame{display:none;flex-direction:column;min-height:100vh;background:#F2EDE8}
+
+/* HEADER */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:300;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.1rem 3rem;
+  background:rgba(254,249,248,.95);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(0,0,0,.07);
+  transition:padding .3s;
+}
+header.sm{padding:.8rem 3rem}
+.nav-l{display:flex;gap:2rem}
+.nav-l a{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(0,0,0,.4);transition:color .2s}
+.nav-l a:hover{color:#000}
+.header-r{display:flex;align-items:center;gap:1.4rem}
+.h-name{font-size:.78rem;font-weight:800;color:#000;letter-spacing:-.01em}
+.h-sep{width:1px;height:13px;background:rgba(0,0,0,.14)}
+.h-soc{display:flex;gap:1.1rem}
+.h-soc a{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(0,0,0,.35);transition:color .2s}
+.h-soc a:hover{color:#000}
+.h-soc .yt{color:var(--pink)}
+
+/* HERO */
+.hero{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:9rem 3rem 5rem;position:relative;overflow:hidden;background:#fff;
+}
+.hero-deco{position:absolute;top:-10%;right:-8%;width:55%;height:70%;background:radial-gradient(ellipse at 60% 30%,rgba(255,34,84,.09) 0%,rgba(255,34,84,.03) 45%,transparent 68%);pointer-events:none}
+.hero-deco2{position:absolute;bottom:-15%;left:-5%;width:45%;height:55%;background:radial-gradient(ellipse at 30% 70%,rgba(50,1,133,.05) 0%,transparent 65%);pointer-events:none}
+.hero-in{max-width:640px;width:100%;text-align:center;position:relative;z-index:1}
+.ep-badge{display:inline-flex;align-items:center;gap:.55rem;font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--pink);margin-bottom:2rem}
+.ep-badge::before,.ep-badge::after{content:'';width:20px;height:1px;background:currentColor}
+.hero-h1{font-size:clamp(2.4rem,6vw,4.8rem);font-weight:900;line-height:.93;letter-spacing:-.04em;color:#000;margin-bottom:1.25rem}
+.hero-h1 em{font-style:normal;color:var(--pink)}
+.hero-p{font-size:.93rem;font-weight:300;color:rgba(0,0,0,.48);line-height:1.8;max-width:44ch;margin:0 auto 3rem}
+.hero-stats{display:flex;justify-content:center;gap:3.5rem;margin-bottom:3rem;padding:1.5rem 0;border-top:1px solid rgba(0,0,0,.07);border-bottom:1px solid rgba(0,0,0,.07)}
+.stat-v{font-size:1.75rem;font-weight:900;color:#000;line-height:1}
+.stat-l{font-size:.58rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(0,0,0,.35);margin-top:.3rem}
+.hero-btn{display:inline-flex;align-items:center;gap:.65rem;padding:1rem 2.5rem;background:var(--pink);color:#fff;font-family:'Montserrat',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border:none;border-radius:2px;cursor:pointer;transition:background .2s,transform .15s}
+.hero-btn:hover{background:var(--burg);transform:translateY(-1px)}
+.hero-verse{margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(0,0,0,.06)}
+.hero-verse blockquote{font-size:.8rem;font-weight:300;font-style:italic;color:rgba(0,0,0,.35);max-width:38ch;margin:0 auto .5rem;line-height:1.7}
+.hero-verse cite{font-size:.62rem;font-weight:700;letter-spacing:.1em;color:var(--gold);font-style:normal}
+
+/* YT CTA */
+.yt-cta{background:#FEF9F8;padding:6rem 3rem;text-align:center;border-top:1px solid rgba(0,0,0,.06)}
+.yt-tag{font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--pink);margin-bottom:.75rem;display:block}
+.yt-h2{font-size:clamp(1.8rem,3.5vw,3rem);font-weight:900;color:#000;line-height:1;letter-spacing:-.03em;margin-bottom:1rem}
+.yt-p{font-size:.88rem;font-weight:300;color:rgba(0,0,0,.45);max-width:38ch;margin:0 auto 2.5rem;line-height:1.75}
+.yt-btn{display:inline-flex;align-items:center;gap:.65rem;padding:.9rem 2.25rem;background:var(--pink);color:#fff;font-family:'Montserrat',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border:none;border-radius:2px;cursor:pointer;transition:background .2s}
+.yt-btn:hover{background:var(--burg)}
+.yt-ep-card{display:inline-flex;align-items:center;gap:1rem;margin-top:2rem;padding:1rem 1.5rem;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:4px;text-align:left}
+.yt-ep-thumb{width:64px;height:40px;background:rgba(255,34,84,.1);border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.yt-ep-thumb svg{width:18px;height:18px;fill:var(--pink)}
+.yt-ep-label{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(0,0,0,.32);margin-bottom:.2rem}
+.yt-ep-title{font-size:.82rem;font-weight:700;color:rgba(0,0,0,.75)}
+
+/* FOOTER */
+footer{background:#000;padding:3.5rem 3rem 2rem;border-top:1px solid rgba(255,255,255,.04)}
+.ft-in{max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start;gap:3rem;flex-wrap:wrap;padding-bottom:2rem;border-bottom:1px solid rgba(255,255,255,.05)}
+.fb-name{font-size:.95rem;font-weight:800;color:#fff;margin-bottom:.3rem;letter-spacing:-.01em}
+.fb-tag{font-size:.75rem;font-weight:300;color:rgba(255,255,255,.25);margin-bottom:1.1rem}
+.fb-soc{display:flex;gap:.6rem}
+.fb-soc a{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border:1px solid rgba(255,255,255,.1);border-radius:2px;font-size:.58rem;font-weight:700;color:rgba(255,255,255,.35);transition:all .2s}
+.fb-soc a:hover{border-color:rgba(255,255,255,.3);color:#fff}
+.fb-soc .yt{border-color:rgba(255,34,84,.25);color:var(--pink)}
+.ft-lh{font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.22);margin-bottom:.5rem}
+.ft-links{display:flex;flex-direction:column;gap:.45rem}
+.ft-links a{font-size:.78rem;font-weight:500;color:rgba(255,255,255,.38);transition:color .2s}
+.ft-links a:hover{color:#fff}
+.ft-bot{max-width:1280px;margin:.75rem auto 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem}
+.ft-copy{font-size:.62rem;color:rgba(255,255,255,.14)}
+.ft-miss{font-size:.62rem;color:rgba(255,34,84,.35)}
+
+/* ═══════════════════════════════════════
+   GAME VIEW
+═══════════════════════════════════════ */
+
+/* Game top nav */
+.gnav{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.85rem 2.5rem;
+  background:#fff;border-bottom:1px solid rgba(0,0,0,.08);
+  flex-shrink:0;
+}
+.gn-brand{font-size:.82rem;font-weight:800;color:#000;letter-spacing:-.01em}
+.gn-right{display:flex;align-items:center;gap:1.25rem}
+.gn-soc{display:flex;gap:1rem}
+.gn-soc a{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(0,0,0,.32);transition:color .2s}
+.gn-soc a:hover{color:#000}
+.gn-soc .yt{color:var(--pink)}
+.gn-sep{width:1px;height:13px;background:rgba(0,0,0,.12)}
+.gn-exit{
+  display:flex;align-items:center;gap:.35rem;
+  font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:rgba(0,0,0,.38);background:transparent;border:none;cursor:pointer;
+  padding:.3rem .5rem;border-radius:2px;transition:color .2s;
+}
+.gn-exit:hover{color:#000}
+
+/* Game content area */
+.garea{
+  flex:1;display:flex;justify-content:center;
+  padding:2.5rem 1.5rem 6rem;
+}
+.gwrap{width:100%;max-width:660px}
+
+/* Progress bar */
+.prog{display:flex;align-items:flex-start;margin-bottom:2rem}
+.ps{display:flex;flex-direction:column;align-items:center;flex:1}
+.ps:last-child{flex:0}
+.ps-row{display:flex;align-items:center;width:100%}
+.ps-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;transition:background .35s}
+.ps-dot.done{background:var(--green)}
+.ps-dot.active{background:#000}
+.ps-dot.fut{background:rgba(0,0,0,.15)}
+.ps-line{flex:1;height:1px;transition:background .35s}
+.ps-line.done{background:rgba(29,158,117,.4)}
+.ps-line.fut{background:rgba(0,0,0,.1)}
+.ps-lbl{font-size:8px;color:rgba(0,0,0,.3);margin-top:4px;text-align:center;line-height:1.3;padding:0 3px}
+.ps-lbl.active{color:rgba(0,0,0,.65)}
+
+/* Score pill */
+.score-pill{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;padding:.6rem 1rem;background:#fff;border-radius:4px;border:1px solid rgba(0,0,0,.07)}
+.sp-l{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(0,0,0,.38)}
+.sp-r{font-size:.82rem;font-weight:800;color:#000}
+.sp-r span{color:var(--pink)}
+
+/* Screen card */
+.sc{background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:6px;padding:2rem 2.25rem;animation:fadeIn .28s ease;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.sc-tag{font-size:.58rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(0,0,0,.3);margin-bottom:.6rem;display:block}
+.sc-h2{font-size:1.25rem;font-weight:800;color:#000;margin-bottom:1rem;line-height:1.25;letter-spacing:-.01em}
+.sc-p{font-size:.86rem;color:rgba(0,0,0,.52);line-height:1.8;margin-bottom:.85rem}
+
+/* Verse card */
+.vcard{background:rgba(212,175,55,.07);border-left:3px solid var(--gold);padding:.9rem 1.1rem;margin:.9rem 0;border-radius:0 4px 4px 0}
+.vcard p{font-size:.82rem;font-style:italic;line-height:1.7;color:rgba(0,0,0,.72);margin-bottom:.3rem}
+.vcard cite{font-size:.65rem;font-weight:700;letter-spacing:.07em;color:var(--gold);font-style:normal}
+
+/* Options */
+.opt{display:flex;align-items:center;gap:.85rem;padding:.85rem 1.1rem;margin-bottom:.55rem;border:1px solid rgba(0,0,0,.09);border-radius:4px;background:#fafafa;cursor:pointer;transition:border-color .15s,background .15s;font-size:.84rem;color:rgba(0,0,0,.65);line-height:1.5}
+.opt:hover{border-color:rgba(0,0,0,.2);background:#f5f5f5}
+.opt.correct{background:#E1F5EE;border-color:var(--green);color:#085041;cursor:default}
+.opt.wrong{background:#FAECE7;border-color:var(--red);color:#993C1D;cursor:default}
+.opt.show-ok{background:rgba(29,158,117,.06);border-color:rgba(29,158,117,.35);color:rgba(0,0,0,.45);cursor:default}
+.opt-dot{width:17px;height:17px;border-radius:50%;border:1px solid rgba(0,0,0,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.6rem;color:transparent}
+.opt.correct .opt-dot{background:var(--green);border-color:var(--green);color:#fff}
+.opt.wrong .opt-dot{background:var(--red);border-color:var(--red);color:#fff}
+.opt.show-ok .opt-dot{border-color:var(--green);color:var(--green)}
+
+/* Feedback */
+.fb{padding:.8rem 1rem;border-radius:4px;font-size:.8rem;line-height:1.6;margin-top:.6rem}
+.fb.ok{background:#E1F5EE;color:#085041;border:1px solid rgba(29,158,117,.2)}
+.fb.err{background:#FAECE7;color:#993C1D;border:1px solid rgba(216,90,48,.18)}
+
+/* Button */
+.cbtn{display:inline-flex;align-items:center;gap:.45rem;padding:.72rem 1.6rem;background:transparent;color:rgba(0,0,0,.5);font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border:1px solid rgba(0,0,0,.18);border-radius:2px;cursor:pointer;margin-top:1.1rem;transition:all .2s}
+.cbtn:hover{border-color:rgba(0,0,0,.38);color:#000}
+.cbtn.pk{background:var(--pink);border-color:var(--pink);color:#fff}
+.cbtn.pk:hover{background:var(--burg);border-color:var(--burg)}
+
+/* Classify */
+.cl-card{border:1px solid rgba(0,0,0,.09);border-radius:6px;margin-bottom:.6rem;overflow:hidden;background:#fafafa;transition:border-color .2s}
+.cl-card.ok{border-color:var(--green);background:#E1F5EE}
+.cl-card.err{border-color:var(--red);background:#FAECE7}
+.cl-q{padding:11px 14px;font-size:.84rem;color:#000;line-height:1.5}
+.cl-card.ok .cl-q{color:#085041}
+.cl-card.err .cl-q{color:#993C1D}
+.cl-brow{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid rgba(0,0,0,.07)}
+.cl-card.ok .cl-brow,.cl-card.err .cl-brow{border-color:rgba(0,0,0,.06)}
+.clb{padding:8px;font-size:.7rem;font-weight:700;letter-spacing:.05em;border:none;border-right:1px solid rgba(0,0,0,.07);background:rgba(0,0,0,.02);cursor:pointer;color:rgba(0,0,0,.45);transition:all .15s;font-family:'Montserrat',sans-serif}
+.clb:last-child{border-right:none}
+.clb:hover:not(:disabled){background:rgba(0,0,0,.05);color:#000}
+.clb.se{background:var(--pink);color:#fff;border-color:var(--pink)}
+.clb.sc{background:var(--purple);color:#fff;border-color:var(--purple)}
+.clb.ok-state{background:var(--green);color:#fff;border-color:transparent}
+.clb.err-state{background:var(--red);color:#fff;border-color:transparent}
+.cl-hint{font-size:.7rem;color:#993C1D;padding:4px 14px 8px;font-weight:600}
+
+/* Match */
+.match-g{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;align-items:start}
+.match-col-lbl{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(0,0,0,.35);margin-bottom:.5rem}
+.mi{padding:.85rem 1rem;border:1px solid rgba(0,0,0,.09);border-radius:4px;background:#fafafa;font-size:.78rem;cursor:pointer;line-height:1.5;transition:border-color .15s,background .15s;user-select:none}
+.mi:hover:not(.paired):not(.sel){border-color:rgba(0,0,0,.2);background:#f5f5f5}
+.mi.sel{border-color:var(--pink);background:rgba(255,34,84,.06);color:#000}
+.mi.paired{border-color:var(--green);background:#E1F5EE;color:#085041;cursor:default}
+.mi-ref{font-size:.72rem;font-weight:700;color:var(--pink);margin-bottom:.3rem;letter-spacing:.03em}
+.mi.paired .mi-ref{color:var(--green)}
+.mi-txt{font-size:.75rem;font-style:italic;color:rgba(0,0,0,.55);line-height:1.6}
+.mi.paired .mi-txt{color:rgba(8,80,65,.7)}
+.mi-desc{font-size:.82rem;color:rgba(0,0,0,.65)}
+.mi.paired .mi-desc{color:#085041}
+
+/* TF */
+.tf-segs{display:flex;gap:4px;margin-bottom:1.4rem}
+.tf-seg{flex:1;height:3px;border-radius:2px;background:rgba(0,0,0,.1);transition:background .3s}
+.tf-seg.ok{background:var(--green)}
+.tf-seg.err{background:var(--red)}
+.tf-seg.cur{background:rgba(0,0,0,.4)}
+.tf-qbox{background:rgba(0,0,0,.03);border-radius:4px;padding:1.2rem 1.1rem;margin-bottom:1.2rem}
+.tf-q{font-size:.93rem;font-weight:500;color:#000;line-height:1.6}
+.tf-btns{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.tfb{padding:.9rem;border:1px solid rgba(0,0,0,.1);border-radius:4px;background:rgba(0,0,0,.02);color:rgba(0,0,0,.55);font-family:'Montserrat',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .15s}
+.tfb:hover{border-color:rgba(0,0,0,.22);background:rgba(0,0,0,.04);color:#000}
+.tfb.ok{background:#E1F5EE;border-color:var(--green);color:#085041;cursor:default}
+.tfb.err{background:#FAECE7;border-color:var(--red);color:#993C1D;cursor:default}
+.tfb.showok{background:rgba(29,158,117,.06);border-color:rgba(29,158,117,.35);color:rgba(0,0,0,.45);cursor:default}
+.tfb.dis{cursor:default}
+
+/* Fill */
+.fill-verse{background:rgba(212,175,55,.07);border-left:3px solid var(--gold);padding:1.1rem 1.15rem;margin-bottom:1.2rem;border-radius:0 4px 4px 0}
+.fill-verse p{font-size:1rem;font-style:italic;line-height:1.7;color:rgba(0,0,0,.78);margin-bottom:.35rem}
+.blank{font-style:normal;font-weight:700;border-bottom:2px solid var(--gold);color:#9a7c00;padding-bottom:1px}
+.blank.ok{border-color:var(--green);color:var(--green)}
+.blank.err{border-color:var(--red);color:var(--red)}
+
+/* Stages */
+.stage{padding:1.1rem;border-radius:6px;margin-bottom:.65rem;display:flex;gap:.9rem;align-items:flex-start}
+.snum{font-size:.58rem;font-weight:700;padding:3px 7px;border-radius:3px;flex-shrink:0;margin-top:2px;letter-spacing:.04em}
+.stitle{font-size:.9rem;font-weight:800;margin-bottom:.35rem}
+.sdesc{font-size:.76rem;line-height:1.65;margin-bottom:.55rem}
+.smeta{display:flex;justify-content:space-between;align-items:center;padding-top:.5rem;border-top:1px solid rgba(0,0,0,.07)}
+.skey{font-size:.7rem}
+.sref{font-size:.62rem;font-weight:700;letter-spacing:.05em;color:rgba(0,0,0,.35)}
+
+/* Stages game */
+.sg-item{display:flex;align-items:center;gap:.75rem;padding:.85rem 1rem;margin-bottom:.5rem;border:1px solid rgba(0,0,0,.09);border-radius:4px;background:#fafafa;cursor:pointer;font-size:.88rem;font-weight:600;color:#000;transition:all .15s}
+.sg-item:hover{border-color:rgba(0,0,0,.2);background:#f5f5f5}
+.sg-item.correct{background:#E1F5EE;border-color:var(--green);color:#085041;cursor:default}
+.sg-item.wrong{background:#FAECE7;border-color:var(--red);color:#993C1D;cursor:default}
+.sg-item.show-ok{background:rgba(29,158,117,.06);border-color:rgba(29,158,117,.35);color:rgba(0,0,0,.4);cursor:default}
+
+/* Name input */
+.name-screen{text-align:center;padding:2rem 1rem}
+.ns-emoji{font-size:2.5rem;margin-bottom:1.25rem;display:block}
+.ns-pre{font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--pink);margin-bottom:.5rem}
+.ns-h{font-size:1.4rem;font-weight:800;color:#000;margin-bottom:.5rem}
+.ns-p{font-size:.86rem;color:rgba(0,0,0,.48);line-height:1.7;margin-bottom:2rem}
+.ns-input{width:100%;max-width:320px;padding:.85rem 1.1rem;font-family:'Montserrat',sans-serif;font-size:.92rem;font-weight:500;color:#000;border:1.5px solid rgba(0,0,0,.15);border-radius:4px;background:#fff;outline:none;transition:border-color .2s;display:block;margin:0 auto .75rem}
+.ns-input::placeholder{color:rgba(0,0,0,.3)}
+.ns-input:focus{border-color:var(--pink)}
+
+/* Final */
+.final-box{text-align:center;padding:1.5rem .5rem 1.25rem}
+.fgreet{font-size:.78rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(0,0,0,.35);margin-bottom:.6rem}
+.fscore{font-size:5rem;font-weight:900;line-height:1;letter-spacing:-.05em;color:#000;margin-bottom:.35rem}
+.fscore span{color:var(--pink)}
+.fmsg{font-size:1.1rem;font-weight:800;color:#000;margin-bottom:.2rem}
+.fsub{font-size:.78rem;color:rgba(0,0,0,.38);margin-bottom:1.75rem}
+.flist{background:rgba(0,0,0,.03);border-radius:4px;padding:1.2rem;margin-bottom:1.25rem;text-align:left}
+.flist-h{font-size:.6rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:rgba(0,0,0,.3);margin-bottom:.8rem}
+.fi{display:flex;gap:.7rem;align-items:flex-start;margin-bottom:.55rem}
+.fi-ck{color:var(--green);font-size:.82rem;flex-shrink:0;margin-top:1px}
+.fi-t{font-size:.8rem;color:rgba(0,0,0,.65);line-height:1.55}
+.factions{display:flex;gap:.65rem;justify-content:center;flex-wrap:wrap;margin-top:.25rem}
+
+/* Responsive */
+@media(max-width:700px){
+  header,.gnav{padding:.9rem 1.5rem}
+  .nav-l,.gn-soc,.gn-sep{display:none}
+  .hero,.yt-cta,footer{padding-left:1.5rem;padding-right:1.5rem}
+  .sc{padding:1.5rem 1.25rem}
+  .match-g{grid-template-columns:1fr}
+  .tf-btns{grid-template-columns:1fr}
+  .hero-stats{gap:1.75rem}
+  .ft-in{gap:2rem}
+}
+
+/* Entrance animations */
+@keyframes fadeSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.hero-in{animation:fadeSlideIn .6s ease .1s both}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     LANDING VIEW
+══════════════════════════════════════ -->
+<div id="vLand">
+
+  <header id="H">
+    <nav class="nav-l">
+      <a href="#inicio">Inicio</a>
+      <a href="#episodio">Episodio</a>
+    </nav>
+    <div class="header-r">
+      <span class="h-name"><strong>Preaching Jesus</strong></span>
+      <div class="h-sep"></div>
+      <div class="h-soc">
+        <a href="https://www.instagram.com/preaching_jesuss/" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.facebook.com/preachingjesuss" target="_blank" rel="noopener">Facebook</a>
+        <a href="https://www.youtube.com/@preaching_jesus" target="_blank" rel="noopener" class="yt">YouTube</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero" id="inicio">
+    <div class="hero-deco"></div>
+    <div class="hero-deco2"></div>
+    <div class="hero-in">
+      <p class="ep-badge">Juego del episodio</p>
+      <h1 class="hero-h1">El <em>Evangelio</em><br>y el <em>Cristia</em>nismo</h1>
+      <p class="hero-p">Pusiste play. Escuchaste. Ahora descubre cuánto entendiste — con preguntas, retos y los versículos que cambian todo.</p>
+      <div class="hero-stats">
+        <div><div class="stat-v">4</div><div class="stat-l">Niveles</div></div>
+        <div><div class="stat-v">19</div><div class="stat-l">Puntos</div></div>
+        <div><div class="stat-v">~12</div><div class="stat-l">Minutos</div></div>
+      </div>
+      <button class="hero-btn" onclick="enterGame()">Comenzar juego →</button>
+      <div class="hero-verse">
+        <blockquote>"Toda la Escritura es inspirada por Dios, y útil para enseñar, para redargüir, para corregir, para instruir en justicia."</blockquote>
+        <cite>2 Timoteo 3:16</cite>
+      </div>
+    </div>
+  </section>
+
+  <section class="yt-cta" id="episodio">
+    <span class="yt-tag">¿Quieres profundizar más?</span>
+    <h2 class="yt-h2">Mira el episodio<br>completo</h2>
+    <p class="yt-p">Este juego es solo el comienzo. El estudio completo está en nuestro canal con más profundidad bíblica.</p>
+    <a href="https://youtu.be/HbNcDRji7N4" target="_blank" rel="noopener" class="yt-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M8 5v14l11-7z"/></svg>
+      Ver en YouTube
+    </a>
+    <div>
+      <div class="yt-ep-card">
+        <div class="yt-ep-thumb"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div>
+          <div class="yt-ep-label">Estudio bíblico</div>
+          <div class="yt-ep-title">Cristianismo y las 3 etapas que produce el evangelio</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="ft-in">
+      <div>
+        <div class="fb-name"><strong>Preaching Jesus</strong></div>
+        <div class="fb-tag">Conectando al mundo con Dios</div>
+        <div class="fb-soc">
+          <a href="https://www.instagram.com/preaching_jesuss/" target="_blank" rel="noopener">IG</a>
+          <a href="https://www.facebook.com/preachingjesuss" target="_blank" rel="noopener">FB</a>
+          <a href="https://www.youtube.com/@preaching_jesus" target="_blank" rel="noopener" class="yt">YT</a>
+        </div>
+      </div>
+      <div>
+        <div class="ft-lh">Plataformas</div>
+        <div class="ft-links">
+          <a href="https://www.youtube.com/@preaching_jesus" target="_blank" rel="noopener">YouTube →</a>
+          <a href="https://www.instagram.com/preaching_jesuss/" target="_blank" rel="noopener">Instagram →</a>
+          <a href="https://www.facebook.com/preachingjesuss" target="_blank" rel="noopener">Facebook →</a>
+        </div>
+      </div>
+      <div>
+        <div class="ft-lh">Pilares</div>
+        <div class="ft-links">
+          <a href="#">Formación teológica</a>
+          <a href="#">Discipulado</a>
+          <a href="#">Comunidad</a>
+          <a href="#">Vida práctica</a>
+        </div>
+      </div>
+    </div>
+    <div class="ft-bot">
+      <p class="ft-copy">© 2025 Preaching Jesus. Todos los derechos reservados.</p>
+      <p class="ft-miss">Conectando al mundo con Dios</p>
+    </div>
+  </footer>
+
+</div><!-- /vLand -->
+
+
+<!-- ══════════════════════════════════════
+     GAME VIEW
+══════════════════════════════════════ -->
+<div id="vGame">
+
+  <nav class="gnav">
+    <strong class="gn-brand">Preaching Jesus</strong>
+    <div class="gn-right">
+      <div class="gn-soc">
+        <a href="https://www.instagram.com/preaching_jesuss/" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.facebook.com/preachingjesuss" target="_blank" rel="noopener">Facebook</a>
+        <a href="https://www.youtube.com/@preaching_jesus" target="_blank" rel="noopener" class="yt">YouTube</a>
+      </div>
+      <div class="gn-sep"></div>
+      <button class="gn-exit" onclick="exitGame()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        Salir
+      </button>
+    </div>
+  </nav>
+
+  <div class="garea">
+    <div class="gwrap">
+      <div id="G"></div>
+    </div>
+  </div>
+
+</div><!-- /vGame -->
+
+
+<script>
+/* ─── STATE ─────────────────────────────────────────────── */
+var g={
+  step:0, name:'', score:0,
+  mc:{done:false,sel:null},
+  cl:{
+    items:[
+      {id:0,text:"Es un anuncio, una noticia",ans:"E",sel:null},
+      {id:1,text:"Es la vida que surge al creer esa noticia",ans:"C",sel:null},
+      {id:2,text:"Comienza con lo que Dios hizo en Cristo",ans:"E",sel:null},
+      {id:3,text:"Es participar en la vida del Cristo resucitado",ans:"C",sel:null},
+      {id:4,text:"No comienza con lo que nosotros hacemos",ans:"E",sel:null},
+      {id:5,text:"Es mucho más que adherirse a un sistema moral",ans:"C",sel:null}
+    ],
+    checked:false
+  },
+  match:{
+    left:[
+      {id:"a",ref:"Gálatas 2:20",txt:"«Con Cristo estoy juntamente crucificado, y ya no vivo yo, mas vive Cristo en mí; y lo que ahora vivo en la carne, lo vivo en la fe del Hijo de Dios, el cual me amó y se entregó a sí mismo por mí.»"},
+      {id:"b",ref:"2 Corintios 5:17",txt:"«De modo que si alguno está en Cristo, nueva criatura es; las cosas viejas pasaron; he aquí todas son hechas nuevas.»"},
+      {id:"c",ref:"Romanos 6:4",txt:"«Fuimos sepultados juntamente con él para muerte por el bautismo, a fin de que como Cristo resucitó de los muertos... así también nosotros andemos en vida nueva.»"},
+      {id:"d",ref:"Efesios 2:12–13",txt:"«En aquel tiempo estabais sin Cristo... sin esperanza y sin Dios. Pero ahora en Cristo Jesús, habéis sido hechos cercanos por la sangre de Cristo.»"}
+    ],
+    right:[
+      {id:"c",text:"Para andar en vida nueva"},
+      {id:"a",text:"Ya no vivo yo, vive Cristo en mí"},
+      {id:"d",text:"Hechos cercanos por la sangre de Cristo"},
+      {id:"b",text:"Nueva criatura es"}
+    ],
+    selL:null,pairs:{},wrong:null
+  },
+  tf:{
+    cur:0,ans:[],
+    items:[
+      {q:"Estar 'en Cristo' significa solo seguir las enseñanzas morales de Jesús.",a:false,ex:"Significa participar en la vida del Cristo resucitado y vivir bajo la guía del Espíritu Santo. Es mucho más que seguir reglas."},
+      {q:"El creyente está en Cristo y Cristo está en el creyente, a través del Espíritu Santo.",a:true,ex:"Correcto. Pablo describe esta unión mística que define toda la vida cristiana. No es metáfora — es realidad espiritual."},
+      {q:"Pablo usa la categoría 'en Cristo' solo en una o dos ocasiones en sus cartas.",a:false,ex:"La usa constantemente — es su categoría central para describir toda la realidad del creyente."},
+      {q:"Efesios 2:12–13 describe que quienes estaban 'lejos' ahora están cerca por la sangre de Cristo.",a:true,ex:"Exacto. La sangre de Cristo cierra la distancia. El contraste 'antes / ahora' es el corazón de Efesios 2."}
+    ]
+  },
+  fill:{done:false,sel:null},
+  sg:{
+    cur:0,ans:[],
+    items:[
+      {q:"¿Cuál etapa del evangelio libra al creyente de la <strong>culpa</strong> del pecado y ocurre en el momento de creer?",opts:["Santificación","Glorificación","Salvación"],a:2,ex:"Correcto. La Salvación es el momento decisivo: somos justificados, regenerados y adoptados como hijos de Dios al creer en Cristo."},
+      {q:"¿Cuál etapa describe el proceso <em>progresivo</em> por el que el Espíritu transforma al creyente a imagen de Cristo?",opts:["Glorificación","Santificación","Salvación"],a:1,ex:"Exacto. La Santificación es continua — el Espíritu nos forma poco a poco. No es perfección instantánea; es guerra, crecimiento y perseverancia."},
+      {q:"¿En qué etapa el creyente recibirá un cuerpo resucitado, libre para siempre de la <em>presencia</em> del pecado?",opts:["Santificación","Salvación","Glorificación"],a:2,ex:"¡Correcto! La Glorificación es la etapa final. Tan segura que Pablo la menciona en pasado en Romanos 8:30 — ¡y aún está por venir!"}
+    ]
+  }
+};
+
+function vals(o){return Object.keys(o).map(function(k){return o[k];})}
+
+/* ─── VIEW SWITCHING ─────────────────────────────────────── */
+function enterGame(){
+  document.getElementById('vLand').style.display='none';
+  document.getElementById('vGame').style.display='flex';
+  window.scrollTo(0,0);
+  R();
+}
+function exitGame(){
+  document.getElementById('vGame').style.display='none';
+  document.getElementById('vLand').style.display='block';
+  window.scrollTo(0,0);
+  restart();
+}
+
+/* ─── RENDER ─────────────────────────────────────────────── */
+function R(){
+  document.getElementById('G').innerHTML=bar()+pill()+page();
+  window.scrollTo(0,0);
+}
+function go(){g.step++;R();}
+
+/* ─── PROGRESS BAR ───────────────────────────────────────── */
+function bar(){
+  if(g.step===0)return '';
+  var names=['Inicio','El Evangelio','En Cristo','Las 3 Etapas','Final'];
+  var map=[0,1,1,2,2,2,2,3,3,4];
+  var cur=map[Math.min(g.step,9)];
+  var h='<div class="prog">';
+  names.forEach(function(n,i){
+    var done=i<cur,active=i===cur;
+    h+='<div class="ps"'+(i<names.length-1?' style="flex:1"':'')+'>';
+    h+='<div class="ps-row"><div class="ps-dot '+(done?'done':active?'active':'fut')+'"></div>';
+    if(i<names.length-1)h+='<div class="ps-line '+(done?'done':'fut')+'"></div>';
+    h+='</div><div class="ps-lbl'+(active?' active':'')+'">'+n+'</div></div>';
+  });
+  return h+'</div>';
+}
+function pill(){
+  if(g.step===0||g.step===9)return '';
+  return '<div class="score-pill"><span class="sp-l">Puntuación</span><span class="sp-r"><span>'+g.score+'</span> / 19</span></div>';
+}
+function page(){
+  return[sName,sGospel,sClassify,sEnCristoIntro,sMatch,sTF,sFill,sStages,sStagesGame,sFinal][g.step]();
+}
+
+/* ─── HELPERS ────────────────────────────────────────────── */
+function tag(t){return '<span class="sc-tag">'+t+'</span>';}
+function h2(t){return '<div class="sc-h2">'+t+'</div>';}
+function vcard(ref,txt){return '<div class="vcard"><p>'+txt+'</p><cite>'+ref+'</cite></div>';}
+function cbtn(lbl,fn,cls){return '<button onclick="'+(fn||'go()')+'" class="cbtn'+(cls?' '+cls:'')+'">'+(lbl||'Continuar →')+'</button>';}
+
+/* ─── NAME SCREEN ────────────────────────────────────────── */
+function sName(){
+  return '<div class="sc"><div class="name-screen">'
+    +'<span class="ns-emoji">👋</span>'
+    +'<div class="ns-pre">Antes de comenzar</div>'
+    +'<div class="ns-h">¿Cómo te llamas?</div>'
+    +'<p class="ns-p">Solo necesito tu nombre para personalizar tu experiencia.</p>'
+    +'<input id="nameInput" class="ns-input" type="text" placeholder="Escribe tu nombre aquí" maxlength="40" onkeydown="if(event.key===\'Enter\')startGame()">'
+    +'<div style="margin-top:.85rem"><button onclick="startGame()" class="cbtn pk" style="margin-top:0">Empezar a jugar →</button></div>'
+  +'</div></div>';
+}
+function startGame(){
+  var inp=document.getElementById('nameInput');
+  g.name=(inp?inp.value.trim():'');
+  go();
+}
+
+/* ─── GOSPEL MC ──────────────────────────────────────────── */
+function sGospel(){
+  var C=1;
+  var opts=["Un conjunto de reglas para ser mejores personas","La buena noticia de lo que Dios hizo en Cristo","Lo que nosotros hacemos para agradar a Dios","Una filosofía de vida con valores espirituales"];
+  var done=g.mc.done,sel=g.mc.sel;
+  var h='<div class="sc">'+tag('Nivel 1 · El Evangelio')+h2('¿Qué es el evangelio?');
+  h+='<p class="sc-p">El evangelio es la <strong>buena noticia de lo que Dios ha hecho en Cristo</strong>. No comienza con lo que nosotros hacemos, sino con lo que Dios hizo en la persona y obra de su Hijo.</p>';
+  h+=vcard('Lección anterior','"El evangelio es un anuncio. No comienza con lo que nosotros hacemos, sino con lo que Dios hizo en la persona y obra de su Hijo."');
+  h+='<div style="font-size:.8rem;font-weight:700;color:rgba(0,0,0,.7);margin:1.25rem 0 .65rem">¿Cuál describe mejor al evangelio?</div>';
+  opts.forEach(function(o,i){
+    var isC=i===C,wasS=sel===i;
+    var cls='opt';
+    if(done){if(wasS&&isC)cls+=' correct';else if(wasS&&!isC)cls+=' wrong';else if(isC)cls+=' show-ok';}
+    var icon='';
+    if(done&&wasS&&isC)icon='✓';else if(done&&wasS&&!isC)icon='✕';else if(done&&!wasS&&isC)icon='✓';
+    h+='<div class="'+cls+'" onclick="'+(done?'':'mcPick('+i+')')+'">';
+    h+='<div class="opt-dot">'+icon+'</div><span>'+o+'</span></div>';
+  });
+  if(done){
+    h+='<div class="fb '+(sel===C?'ok':'err')+'">'+(sel===C?'✓ Exacto. El evangelio es un anuncio de lo que Dios ya hizo — no una instrucción de lo que debemos hacer.':'✕ No exactamente. El evangelio no comienza con nosotros — comienza con Dios y lo que él hizo en Cristo.')+'</div>';
+    h+=cbtn();
+  }
+  return h+'</div>';
+}
+function mcPick(i){g.mc.done=true;g.mc.sel=i;if(i===1)g.score++;R();}
+
+/* ─── CLASSIFY ───────────────────────────────────────────── */
+function sClassify(){
+  var ck=g.cl.checked;
+  var h='<div class="sc">'+tag('Nivel 1 · El Evangelio')+h2('Evangelio vs. Cristianismo');
+  h+='<p class="sc-p">Si el evangelio es la <em>noticia</em>, el cristianismo es la <em>vida que nace cuando esa noticia es creída</em>. Son distintos — uno es la causa, el otro es el efecto.</p>';
+  h+='<div style="font-size:.72rem;color:rgba(0,0,0,.4);margin-bottom:.75rem">Clasifica cada afirmación:</div>';
+  g.cl.items.forEach(function(item){
+    var done=ck&&item.sel!==null,ok=item.sel===item.ans;
+    var cardCls='cl-card'+(done?(ok?' ok':' err'):'');
+    h+='<div class="'+cardCls+'"><div class="cl-q">'+item.text+'</div>';
+    if(done&&!ok)h+='<div class="cl-hint">Respuesta correcta: '+(item.ans==='E'?'Evangelio':'Cristianismo')+'</div>';
+    h+='<div class="cl-brow">';
+    ['E','C'].forEach(function(v){
+      var active=item.sel===v,label_=v==='E'?'Evangelio':'Cristianismo';
+      var cls='clb';
+      if(active)cls+=v==='E'?' se':' sc';
+      if(done&&active)cls+=ok?' ok-state':' err-state';
+      h+='<button class="'+cls+'" onclick="'+(ck?'':'clPick('+item.id+',\''+v+'\')')+'" '+(ck?'disabled':'')+'>'+label_+'</button>';
+    });
+    h+='</div></div>';
+  });
+  var allPicked=g.cl.items.every(function(x){return x.sel!==null;});
+  if(!ck&&allPicked)h+='<button onclick="clCheck()" class="cbtn pk" style="margin-top:.9rem">Ver resultados</button>';
+  if(ck){
+    var sc=g.cl.items.filter(function(x){return x.sel===x.ans;}).length;
+    h+='<div class="fb ok" style="margin-top:.75rem">'+(sc===6?'★ ¡Perfecto! ':'✓ ')+'Tuviste '+sc+' de 6 correctas.</div>';
+    h+=cbtn();
+  }
+  return h+'</div>';
+}
+function clPick(id,v){if(g.cl.checked)return;g.cl.items[id].sel=v;R();}
+function clCheck(){g.cl.checked=true;g.score+=g.cl.items.filter(function(x){return x.sel===x.ans;}).length;R();}
+
+/* ─── EN CRISTO INTRO ────────────────────────────────────── */
+function sEnCristoIntro(){
+  var h='<div class="sc">'+tag('Nivel 2 · En Cristo')+h2('"En Cristo" — La categoría central');
+  h+='<p class="sc-p">Pablo usa constantemente la categoría <strong>"en Cristo"</strong>. No está por estar. Es la forma en que describe <em>toda</em> la realidad de la vida cristiana: el creyente está en Cristo y Cristo está en el creyente, a través del Espíritu Santo.</p>';
+  h+=vcard('Gálatas 2:20','"Con Cristo estoy juntamente crucificado, y ya no vivo yo, mas vive Cristo en mí; y lo que ahora vivo en la carne, lo vivo en la fe del Hijo de Dios, el cual me amó y se entregó a sí mismo por mí."');
+  h+='<div style="font-size:.78rem;font-weight:700;color:rgba(0,0,0,.6);margin:1.1rem 0 .6rem">Otros pasajes clave:</div>';
+  var ps=[
+    {ref:'2 Corintios 5:17',txt:'"Si alguno está en Cristo, nueva criatura es; las cosas viejas pasaron; he aquí todas son hechas nuevas."',nota:'La identidad del creyente cambia completamente. No es mejora — es nueva creación.',c:'#D4AF37',bg:'rgba(212,175,55,.08)'},
+    {ref:'Romanos 6:4',txt:'"Fuimos sepultados juntamente con él para muerte... a fin de que como Cristo resucitó de los muertos, así también nosotros andemos en vida nueva."',nota:'Participamos en su muerte y resurrección. La vieja vida fue sepultada con Él.',c:'#1D9E75',bg:'rgba(29,158,117,.07)'},
+    {ref:'Efesios 2:12–13',txt:'"En aquel tiempo estabais sin Cristo... sin esperanza y sin Dios. Pero ahora en Cristo Jesús, habéis sido hechos cercanos por la sangre de Cristo."',nota:'El contraste radical: antes sin esperanza, ahora cerca. Eso es el evangelio.',c:'#FF2254',bg:'rgba(255,34,84,.06)'}
+  ];
+  ps.forEach(function(p){
+    h+='<div style="border-left:3px solid '+p.c+';background:'+p.bg+';padding:.85rem 1rem;margin-bottom:.55rem;border-radius:0 4px 4px 0">';
+    h+='<div style="font-size:.6rem;font-weight:700;color:'+p.c+';margin-bottom:.35rem;letter-spacing:.07em">'+p.ref+'</div>';
+    h+='<p style="font-size:.8rem;font-style:italic;line-height:1.65;color:rgba(0,0,0,.65);margin-bottom:.3rem">'+p.txt+'</p>';
+    h+='<p style="font-size:.72rem;color:rgba(0,0,0,.42);line-height:1.5">'+p.nota+'</p></div>';
+  });
+  h+='<div style="background:rgba(0,0,0,.03);border-radius:4px;padding:1rem;margin-top:.9rem">';
+  h+='<div style="font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(0,0,0,.35);margin-bottom:.65rem">Estar "en Cristo" significa</div>';
+  ['Nueva identidad — somos nueva criatura, no mejora del viejo yo.','Unión real — Cristo habita en el creyente por el Espíritu Santo.','Nueva posición — sentados con Él en lugares celestiales (Ef 2:6).','Nueva historia — de lejos a cerca, de sin esperanza a hijos de Dios.'].forEach(function(l){
+    h+='<div style="display:flex;gap:.6rem;margin-bottom:.5rem;align-items:flex-start"><span style="color:var(--gold);font-size:.75rem;flex-shrink:0;margin-top:1px">›</span><span style="font-size:.8rem;color:rgba(0,0,0,.6);line-height:1.55">'+l+'</span></div>';
+  });
+  h+='</div>'+cbtn('Poner a prueba lo aprendido →');
+  return h+'</div>';
+}
+
+/* ─── MATCH ──────────────────────────────────────────────── */
+function sMatch(){
+  var m=g.match;
+  var h='<div class="sc">'+tag('Nivel 2 · En Cristo — Relaciona')+h2('Une el versículo con su verdad');
+  h+='<p class="sc-p" style="font-size:.8rem">Haz clic en un versículo y luego en la descripción que le corresponde.</p>';
+  if(m.selL){
+    var sref=m.left.filter(function(l){return l.id===m.selL;})[0].ref;
+    h+='<div style="font-size:.72rem;padding:7px 10px;background:rgba(255,34,84,.07);border:1px solid rgba(255,34,84,.18);border-radius:3px;color:rgba(0,0,0,.6);margin-bottom:.65rem">Seleccionado: <strong>'+sref+'</strong> — ahora elige la descripción.</div>';
+  }
+  if(m.wrong){
+    h+='<div style="font-size:.72rem;padding:7px 10px;background:#FAECE7;border:1px solid rgba(216,90,48,.2);border-radius:3px;color:#993C1D;margin-bottom:.65rem">✕ Esa combinación no es correcta. Intenta de nuevo.</div>';
+  }
+  h+='<div class="match-g">';
+  h+='<div><div class="match-col-lbl">Versículos</div>';
+  m.left.forEach(function(item){
+    var paired=m.pairs[item.id]!==undefined,sel=m.selL===item.id;
+    var cls='mi'+(paired?' paired':sel?' sel':'');
+    h+='<div class="'+cls+'" onclick="mPickL(\''+item.id+'\')">';
+    if(paired)h+='<div style="font-size:.62rem;font-weight:700;color:var(--green);margin-bottom:.2rem">✓ Emparejado</div>';
+    h+='<div class="mi-ref">'+item.ref+'</div><div class="mi-txt">'+item.txt+'</div></div>';
+  });
+  h+='</div><div><div class="match-col-lbl">Descripciones</div>';
+  m.right.forEach(function(item){
+    var paired=vals(m.pairs).indexOf(item.id)!==-1,canClick=m.selL&&!paired;
+    var cls='mi'+(paired?' paired':'');
+    h+='<div class="'+cls+'" onclick="'+(canClick?'mPickR(\''+item.id+'\')':'')+'">';
+    if(paired)h+='<em style="font-size:.62rem;font-weight:700;color:var(--green);font-style:normal;display:block;margin-bottom:.2rem">✓</em>';
+    h+='<div class="mi-desc">'+item.text+'</div></div>';
+  });
+  h+='</div></div>';
+  var count=Object.keys(m.pairs).length;
+  if(count<4){
+    h+='<div style="font-size:.72rem;color:rgba(0,0,0,.35);margin-top:.75rem">'+count+' de 4 pares completados.</div>';
+  } else {
+    h+='<div class="fb ok" style="margin-top:.75rem">★ ¡Excelente! Todos los pares son correctos.</div>';
+    h+=cbtn();
+  }
+  return h+'</div>';
+}
+function mPickL(id){if(g.match.pairs[id]!==undefined)return;g.match.selL=(g.match.selL===id?null:id);g.match.wrong=null;R();}
+function mPickR(rid){
+  var lid=g.match.selL;if(!lid)return;
+  if(vals(g.match.pairs).indexOf(rid)!==-1)return;
+  if(rid===lid){g.match.pairs[lid]=rid;g.score++;g.match.selL=null;g.match.wrong=null;}
+  else{g.match.wrong={lid:lid,rid:rid};g.match.selL=null;}
+  R();
+}
+
+/* ─── T/F ────────────────────────────────────────────────── */
+function sTF(){
+  var tf=g.tf,cur=tf.cur,item=tf.items[cur],answered=tf.ans[cur]!==undefined;
+  var h='<div class="sc">'+tag('Nivel 2 · En Cristo — Verdadero o Falso');
+  h+='<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.85rem"><div class="sc-h2" style="margin:0">"En Cristo" — ¿Verdad o mito?</div><span style="font-size:.72rem;color:rgba(0,0,0,.3);flex-shrink:0;margin-left:8px">'+(cur+1)+' / '+tf.items.length+'</span></div>';
+  h+='<div class="tf-segs">';
+  tf.items.forEach(function(_,i){var a=tf.ans[i];var isDone=a!==undefined;var isOk=isDone&&(a===tf.items[i].a);var isA=i===cur;h+='<div class="tf-seg'+(isDone?(isOk?' ok':' err'):(isA?' cur':''))+'"></div>';});
+  h+='</div><div class="tf-qbox"><div class="tf-q">'+item.q+'</div></div>';
+  if(!answered){
+    h+='<div class="tf-btns"><button class="tfb" onclick="tfPick(true)">Verdadero</button><button class="tfb" onclick="tfPick(false)">Falso</button></div>';
+  } else {
+    var ua=tf.ans[cur],ok=ua===item.a;
+    h+='<div class="tf-btns">';
+    [true,false].forEach(function(val){
+      var l=val?'Verdadero':'Falso',selThis=ua===val,isRight=item.a===val;
+      var cls='tfb dis';
+      if(selThis&&ok)cls+=' ok';else if(selThis&&!ok)cls+=' err';else if(!selThis&&isRight)cls+=' showok';
+      h+='<button class="'+cls+'">'+l+'</button>';
+    });
+    h+='</div><div class="fb '+(ok?'ok':'err')+'" style="margin-top:.65rem">'+(ok?'✓ ':'✕ ')+item.ex+'</div>';
+    if(cur<tf.items.length-1)h+='<button onclick="tfNext()" class="cbtn">Siguiente →</button>';
+    else h+=cbtn();
+  }
+  return h+'</div>';
+}
+function tfPick(v){g.tf.ans[g.tf.cur]=v;if(v===g.tf.items[g.tf.cur].a)g.score++;R();}
+function tfNext(){g.tf.cur++;R();}
+
+/* ─── FILL ───────────────────────────────────────────────── */
+function sFill(){
+  var done=g.fill.done,sel=g.fill.sel,C=1;
+  var opts=[{t:'libre',c:false},{t:'nueva criatura',c:true},{t:'perfecto',c:false},{t:'salvo',c:false}];
+  var blanks=['libre','nueva criatura','perfecto','salvo'];
+  var h='<div class="sc">'+tag('Nivel 2 · En Cristo — Completa')+h2('Completa el versículo');
+  var bword=done?blanks[sel]:'___________',bcls=done?(sel===C?'ok':'err'):'';
+  h+='<div class="fill-verse"><p>"Si alguno está en Cristo, <span class="blank '+bcls+'">'+bword+'</span> es."</p><cite>2 Corintios 5:17</cite></div>';
+  opts.forEach(function(opt,i){
+    var wasS=sel===i,cls='opt';
+    if(done){if(wasS&&opt.c)cls+=' correct';else if(wasS&&!opt.c)cls+=' wrong';else if(opt.c)cls+=' show-ok';}
+    var icon='';
+    if(done&&wasS&&opt.c)icon='✓';else if(done&&wasS&&!opt.c)icon='✕';else if(done&&!wasS&&opt.c)icon='✓';
+    h+='<div class="'+cls+'" onclick="'+(done?'':'fillPick('+i+')')+'">';
+    h+='<div class="opt-dot">'+icon+'</div><span>'+opt.t+'</span></div>';
+  });
+  if(done){
+    h+='<div class="fb '+(sel===C?'ok':'err')+'" style="margin-top:.6rem">'+(sel===C?'✓ Correcto. "Nueva criatura" habla de transformación total — la vieja naturaleza pasó, todo es hecho nuevo en Cristo.':'✕ La respuesta es "nueva criatura". Estar en Cristo es nacer de nuevo, no mejorar la versión antigua.')+'</div>';
+    h+=cbtn();
+  }
+  return h+'</div>';
+}
+function fillPick(i){g.fill.done=true;g.fill.sel=i;if(i===1)g.score++;R();}
+
+/* ─── STAGES ─────────────────────────────────────────────── */
+function sStages(){
+  var h='<div class="sc">'+tag('Nivel 3 · Las 3 etapas')+h2('El evangelio produce 3 etapas');
+  h+='<p class="sc-p">El evangelio no es solo un momento. Es un proceso que abarca toda la vida del creyente — y más allá de esta vida.</p>';
+  var stages=[
+    {n:'01',title:'Salvación',desc:'El momento inicial. Justificación, regeneración, adopción. No es progresivo — es decisivo e inmediato al creer en Cristo.',key:'Libra de la <em>culpa</em> del pecado',ref:'Col 1:13',bg:'rgba(239,159,39,.12)',bdr:'rgba(212,175,55,.4)',tc:'#7a5c00'},
+    {n:'02',title:'Santificación',desc:'El proceso progresivo en que el Espíritu nos transforma a imagen de Cristo. No es perfección instantánea — es guerra, crecimiento, caída y levantarse.',key:'Libra del <em>poder</em> del pecado',ref:'1 Tes 4:3',bg:'rgba(29,158,117,.1)',bdr:'rgba(29,158,117,.35)',tc:'#085041'},
+    {n:'03',title:'Glorificación',desc:'La transformación final. Resurrección corporal, liberación total del pecado. Tan segura que Pablo la menciona en pasado en Romanos 8:30.',key:'Libra de la <em>presencia</em> del pecado',ref:'Ro 8:30',bg:'rgba(50,1,133,.08)',bdr:'rgba(50,1,133,.3)',tc:'#320185'}
+  ];
+  stages.forEach(function(s){
+    h+='<div class="stage" style="background:'+s.bg+';border:1px solid '+s.bdr+'">';
+    h+='<div class="snum" style="background:rgba(0,0,0,.07);color:'+s.tc+';opacity:.8">'+s.n+'</div>';
+    h+='<div style="flex:1"><div class="stitle" style="color:'+s.tc+'">'+s.title+'</div>';
+    h+='<div class="sdesc" style="color:rgba(0,0,0,.55)">'+s.desc+'</div>';
+    h+='<div class="smeta"><span class="skey" style="color:'+s.tc+';opacity:.75">'+s.key+'</span><span class="sref">'+s.ref+'</span></div>';
+    h+='</div></div>';
+  });
+  h+=cbtn('Poner a prueba lo aprendido →');
+  return h+'</div>';
+}
+
+/* ─── STAGES GAME ────────────────────────────────────────── */
+function sStagesGame(){
+  var sg=g.sg,cur=sg.cur,item=sg.items[cur],answered=sg.ans[cur]!==undefined;
+  var h='<div class="sc">'+tag('Nivel 3 · Las 3 etapas — Quiz');
+  h+='<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.85rem"><div class="sc-h2" style="margin:0">Las 3 etapas — ¿Cuál es cuál?</div><span style="font-size:.72rem;color:rgba(0,0,0,.3);flex-shrink:0;margin-left:8px">'+(cur+1)+' / '+sg.items.length+'</span></div>';
+  h+='<div class="tf-segs">';
+  sg.items.forEach(function(_,i){var a=sg.ans[i];var isDone=a!==undefined;var isOk=isDone&&(a===sg.items[i].a);var isA=i===cur;h+='<div class="tf-seg'+(isDone?(isOk?' ok':' err'):(isA?' cur':''))+'"></div>';});
+  h+='</div><div class="tf-qbox"><div class="tf-q">'+item.q+'</div></div>';
+  if(!answered){
+    item.opts.forEach(function(opt,i){
+      h+='<div class="sg-item" onclick="sgPick('+i+')"><div class="opt-dot"></div><span>'+opt+'</span></div>';
+    });
+  } else {
+    var ua=sg.ans[cur],ok=ua===item.a;
+    item.opts.forEach(function(opt,i){
+      var isC=i===item.a,wasS=ua===i,cls='sg-item';
+      if(wasS&&ok)cls+=' correct';else if(wasS&&!ok)cls+=' wrong';else if(!wasS&&isC)cls+=' show-ok';
+      var icon=((wasS&&ok)?'✓ ':(wasS&&!ok)?'✕ ':(!wasS&&isC)?'✓ ':'');
+      h+='<div class="'+cls+'"><div class="opt-dot">'+icon.trim()+'</div><span>'+icon+opt+'</span></div>';
+    });
+    h+='<div class="fb '+(ok?'ok':'err')+'" style="margin-top:.65rem">'+(ok?'✓ ':'✕ ')+item.ex+'</div>';
+    if(cur<sg.items.length-1)h+='<button onclick="sgNext()" class="cbtn">Siguiente →</button>';
+    else h+=cbtn('Ver mis resultados →');
+  }
+  return h+'</div>';
+}
+function sgPick(i){g.sg.ans[g.sg.cur]=i;if(i===g.sg.items[g.sg.cur].a)g.score++;R();}
+function sgNext(){g.sg.cur++;R();}
+
+/* ─── FINAL ──────────────────────────────────────────────── */
+function sFinal(){
+  var MAX=19,pct=Math.round(g.score/MAX*100);
+  var n=g.name;
+  var msg=pct>=85?(n?'¡Lo clavaste, '+n+'!':'¡Excelente comprensión bíblica!'):pct>=65?(n?'¡Muy buen trabajo, '+n+'!':'¡Muy buen trabajo!'):pct>=45?(n?'¡Buen comienzo, '+n+'!':'¡Buen comienzo!'):('¡Sigue estudiando la Palabra'+(n?', '+n:'')+'!');
+  var h='<div class="sc"><div class="final-box">';
+  if(n)h+='<div class="fgreet">'+n+' · Lección completada</div>';
+  else h+='<div class="fgreet">Lección completada</div>';
+  h+='<div class="fscore">'+pct+'<span>%</span></div>';
+  h+='<div class="fmsg">'+msg+'</div>';
+  h+='<div class="fsub">'+g.score+' de '+MAX+' puntos</div></div>';
+  h+='<div class="flist"><div class="flist-h">Lo que aprendiste hoy</div>';
+  ['El evangelio es la buena noticia de lo que Dios hizo en Cristo — no lo que nosotros hacemos.','El cristianismo es la vida que nace cuando esa noticia es creída por fe.','Pablo usa "en Cristo" constantemente — es la categoría central de la vida cristiana.','El creyente está en Cristo y Cristo en el creyente, por la obra del Espíritu Santo.','El evangelio produce 3 etapas: salvación, santificación y glorificación.'].forEach(function(l){
+    h+='<div class="fi"><span class="fi-ck">✓</span><span class="fi-t">'+l+'</span></div>';
+  });
+  h+='</div>';
+  h+=vcard('2 Corintios 5:17','"Si alguno está en Cristo, nueva criatura es; las cosas viejas pasaron; he aquí todas son hechas nuevas."');
+  h+='<div class="factions">';
+  h+='<a href="https://youtu.be/HbNcDRji7N4" target="_blank" rel="noopener" class="cbtn pk" style="margin-top:.9rem">Ver episodio completo →</a>';
+  h+='<button onclick="restart()" class="cbtn" style="margin-top:.9rem">Jugar de nuevo</button>';
+  h+='<button onclick="exitGame()" class="cbtn" style="margin-top:.9rem">Volver al inicio</button>';
+  h+='</div></div>';
+  return h;
+}
+
+/* ─── RESTART ────────────────────────────────────────────── */
+function restart(){
+  g.step=0;g.name='';g.score=0;
+  g.mc={done:false,sel:null};
+  g.cl.items.forEach(function(x){x.sel=null;});g.cl.checked=false;
+  g.match.selL=null;g.match.pairs={};g.match.wrong=null;
+  g.tf.cur=0;g.tf.ans=[];
+  g.fill.done=false;g.fill.sel=null;
+  g.sg.cur=0;g.sg.ans=[];
+  R();
+}
+
+/* ─── HEADER SCROLL (landing only) ──────────────────────── */
+window.addEventListener('scroll',function(){
+  var h=document.getElementById('H');
+  if(h)h.classList.toggle('sm',window.scrollY>60);
+},{passive:true});
+
+/* ─── INIT ───────────────────────────────────────────────── */
+// Don't render game on load — only when user enters
+</script>
+</body>
+</html>
